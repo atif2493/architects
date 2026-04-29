@@ -628,7 +628,7 @@ The point of the prototype is to validate the **UX and decision-flow**, not the 
 
 This repository is scaffolded for local-first development with Docker Compose.
 
-- Frontend: `http://localhost:80`
+- Frontend (Stratoscope UI): `http://localhost:80` — React 18 + Vite + TypeScript + Tailwind + lucide-react (matches `mock-sites` UX).
 - Backend API: `http://localhost:8003`
 - Backend health: `http://localhost:8003/health`
 - Postgres: `localhost:5432`
@@ -641,6 +641,14 @@ cp .env.example .env
 docker compose up --build
 ```
 
+Frontend-only development (hot reload, port 5173):
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
 Stop:
 
 ```bash
@@ -649,7 +657,7 @@ docker compose down
 
 ### Concise implementation comment
 
-- Version Number: `0.1.0`
-- What it does: Boots a local frontend, FastAPI backend, Postgres, and Redis aligned to locked ports for development.
-- Dependencies: Docker, Docker Compose, Python 3.12 images, `ksh`, `apt-get`, `wget`, `curl`, `vim`.
-- Port Number: `80`, `8003`, `5432`, `6379`
+- Version Number: `0.2.0`
+- What it does: Boots nginx-served Stratoscope UI (built with Vite), FastAPI backend, Postgres, and Redis aligned to locked ports for development.
+- Dependencies: Docker, Docker Compose; frontend build uses Node 20; runtime nginx image includes `ksh`, `wget`, `curl`, `vim` after `apt-get update` / `upgrade`; backend Python 3.12.
+- Port Number: `80`, `8003`, `5432`, `6379`; local Vite dev server `5173` (optional)
