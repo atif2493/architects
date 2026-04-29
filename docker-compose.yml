@@ -3,11 +3,17 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    image: stratoscope-ui:local
     container_name: ai-cost-frontend
     ports:
       - "80:80"
-    depends_on:
-      - backend
+    # Static UI; does not require backend to be up — useful for UI-only docker testing
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1/ >/dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
     restart: unless-stopped
 
   backend:

@@ -649,6 +649,21 @@ npm install
 npm run dev
 ```
 
+Docker — **UI only** (build image + run nginx on port 80; no Postgres/Redis/backend):
+
+```bash
+docker compose build frontend
+docker compose up frontend
+```
+
+Docker — **full stack** (backend + databases + UI):
+
+```bash
+docker compose up --build
+```
+
+Image tags `stratoscope-ui:local` on successful `frontend` build; healthcheck probes `http://127.0.0.1/` inside the container.
+
 Stop:
 
 ```bash
@@ -657,7 +672,7 @@ docker compose down
 
 ### Concise implementation comment
 
-- Version Number: `0.2.0`
-- What it does: Boots nginx-served Stratoscope UI (built with Vite), FastAPI backend, Postgres, and Redis aligned to locked ports for development.
+- Version Number: `0.2.1`
+- What it does: Boots nginx-served Stratoscope UI (multi-stage Docker build with npm cache mount, gzip + `/assets/` caching, container healthcheck), optional FastAPI backend, Postgres, and Redis on locked ports.
 - Dependencies: Docker, Docker Compose; frontend build uses Node 20; runtime nginx image includes `ksh`, `wget`, `curl`, `vim` after `apt-get update` / `upgrade`; backend Python 3.12.
 - Port Number: `80`, `8003`, `5432`, `6379`; local Vite dev server `5173` (optional)
